@@ -12,7 +12,7 @@ resource "aws_instance" "new_instance" {
 
 resource "aws_security_group" "instance_sg" {
   name_prefix = "instance_sg"
-  description = "Allow inbound traffic on port 22, 80 & 8080"
+  description = "Allow inbound traffic on port 22, 80 & 9000"
   vpc_id      = aws_default_vpc.default.id
 
   ingress {
@@ -30,8 +30,8 @@ resource "aws_security_group" "instance_sg" {
   }
 
   ingress {
-    from_port   = 8080
-    to_port     = 8080
+    from_port   = 9000
+    to_port     = 9000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -44,3 +44,21 @@ resource "aws_security_group" "instance_sg" {
   }
 }
 
+
+resource "null_resource" "copy_ssh_key" {
+  count = var.instance_count
+
+  connection {
+    type        = "ssh"
+    host        = aws_instance.new_instance[count.index].public_ip
+    user        = "ubuntu"
+    private_key = file("${path.module}/mtc-terransible.pem") # Change to your private key path
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo '${file("~/.ssh/id_rsa.pub")}' >> ~/.ssh/authorized_keys", # Change to your public key
+      "echo 'Copy Completed'"
+    ]
+  }
+}
