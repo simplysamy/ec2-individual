@@ -7,26 +7,14 @@ resource "aws_instance" "demo_instance" {
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.instance_sg.id]
 
+  root_block_device {
+    volume_size = var.root_vol_size  # Root volume size in GB
+    volume_type = var.root_vol_type
+  }
+
   tags = {
     Name = "demo_instance_${count.index}"
   }
-}
-resource "aws_ebs_volume" "demo_volume" {
-  count             = var.instance_count
-  # availability_zone = var.az # Change the availability zone as needed
-  availability_zone = aws_instance.demo_instance[count.index].availability_zone
-  size              = var.ebs_size  # Size in GB
-  type              = var.ebs_type
-  tags = {
-    Name = "demo_volume_${count.index}"
-  }
-}
-
-resource "aws_volume_attachment" "ebs_attachment" {
-  count       = var.instance_count
-  device_name = "/dev/sdf"  # Device name to attach the volume to
-  volume_id   = aws_ebs_volume.demo_volume[count.index].id
-  instance_id = aws_instance.demo_instance[count.index].id # Replace with your instance ID
 }
 
 

@@ -19,12 +19,12 @@ variable "key_name" {
   default = "mtc-terransible"
 }
 
-variable "ebs_type" {
+variable "root_vol_type" {
    type   = string
    default = "gp3"
 }
 
-variable "ebs_size" {
+variable "root_vol_size" {
    type   = number
    default = 25
 }
