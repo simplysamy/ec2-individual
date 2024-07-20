@@ -66,14 +66,14 @@ resource "aws_security_group" "instance_sg" {
 }
 
 resource "null_resource" "copy_ssh_key" {
-    depends_on = [aws_instance.my_instances]
+    depends_on = [aws_instance.demo_instance]
     
     # Add count to replicate the resource based on the number of instances.
     count = var.instance_count
 
     connection {
         type = "ssh"
-        host = aws_instance.my_instances[count.index].public_ip
+        host = aws_instance.demo_instance[count.index].public_ip
         user = "ubuntu" 
         private_key = file("~/mtc-terransible.pem") # Change to your private key path
     } 
