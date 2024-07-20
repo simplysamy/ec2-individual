@@ -17,3 +17,13 @@ variable "key_name" {
   type    = string
   default = "mtc-terransible"
 }
+
+variable "ebs_type" {
+   type   = string
+   default = "gp3"
+}
+
+variable "ebs_size" {
+   type   = number
+   default = 25
+}
