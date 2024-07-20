@@ -1,6 +1,7 @@
 resource "aws_default_vpc" "default" {}
 
 resource "aws_instance" "demo_instance" {
+  availability_zone      = var.az
   count                  = var.instance_count
   ami                    = var.ami_id
   instance_type          = var.instance_type
@@ -13,7 +14,7 @@ resource "aws_instance" "demo_instance" {
 }
 resource "aws_ebs_volume" "demo_volume" {
   count             = var.instance_count
-  availability_zone = "us-east-1a"  # Change the availability zone as needed
+  availability_zone = var.az # Change the availability zone as needed
   size              = var.ebs_size  # Size in GB
   type              = var.ebs_type
   tags = {

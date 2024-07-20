@@ -3,6 +3,11 @@ variable "instance_count" {
   default = 1
 }
 
+variable "az" {
+  type    = string
+  default = "us-east-1a"
+}
+
 variable "ami_id" {
   type    = string
   default = "ami-0a0e5d9c7acc336f1"
