@@ -19,7 +19,7 @@ resource "aws_ebs_volume" "my_volume" {
 resource "aws_volume_attachment" "ebs_attachment" {
   device_name = "/dev/sdf"  # Device name to attach the volume to
   volume_id   = aws_ebs_volume.my_volume.id
-  instance_id = var.ami_id # Replace with your instance ID
+  instance_id = ws_instance.demo_instance[count.index].id # Replace with your instance ID
 }
 
 
