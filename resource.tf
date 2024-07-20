@@ -12,6 +12,7 @@ resource "aws_instance" "demo_instance" {
   }
 }
 resource "aws_ebs_volume" "demo_volume" {
+  count             = var.instance_count
   availability_zone = "us-east-1a"  # Change the availability zone as needed
   size              = var.ebs_size  # Size in GB
   type              = var.ebs_type
